@@ -8,12 +8,21 @@
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
 
   <style>
-    .parallax-container {
+    #index-parallax {
       height: 100vh;
     }
 
     .opaque-background {
-      background-color:rgba(0,0,0,0.7);
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .price-parallax {
+      height: 800px;
     }
   </style>
 
@@ -26,7 +35,7 @@
 
 <body>
 
-  <div class="parallax-container">
+  <div id="index-parallax" class="parallax-container">
 
     <nav class="transparent z-depth-0 container">
       <div class="nav-wrapper">
@@ -43,31 +52,102 @@
     <div class="section no-pad-bot">
       <div class="container">
 
-        <h1 class="center black-text">WhenTesla</h1>
+        <h1 class="center">WhenTesla</h1>
         <div class="row center">
           <h5 class="header col s12 light">A simple calculator for cryptocurrency and cars</h5>
         </div>
         <div class="row center">
-          <a href="#" class="btn-large waves-effect waves-light teal lighten-1">When Tesla?</a>
+          <a href="#" onclick="showPrice()" class="btn-large waves-effect waves-light teal lighten-1">When Tesla?</a>
         </div>
         <br><br>
 
       </div>
     </div>
 
-    <div id ="test" class="section opaque-background center">
-      <div class="row container white-text">
-        <h2 class="header">Result</h2>
-        <br />btcPrice: <span id="btcPrice"></span>
-        <br />teslaPrice: <span id="teslaPrice"></span>
-        <br />NeededBtc: <span id="btcNeed"></span>
-      </div>
-    </div>
+  </div>
 
   </div>
 
 
 
+  <div id="price-parallax" class="parallax-container" style="display: none">
+    <div class="parallax"><img src="./img/roadster_top.jpg"></div>
+
+    <div id="price-info" class="section opaque-background">
+      <div class="row white-text">
+        <h2 class="header center">To the Moon!</h2>
+
+      </div>
+
+      <div class="row container">
+
+        <div class="col s12 m4">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text center">
+              <span class="card-title"><img src="https://cryptocompare.com/media/19633/btc.png" class="icon"> Bitcoin</span>
+
+              <br/>Bitcoin Price: <span id="btcPrice"></span>
+              <br/>Amount of Bitcoin Needed: <span id="btcNeed"></span>
+            </div>
+            <div class="card-action center">
+              <a href="https://www.coinbase.com/join/585d3083a6fb393c51cf1880">Buy BTC on Coinbase</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text center">
+              <span class="card-title"><img src="https://cryptocompare.com/media/20646/eth_logo.png" class="icon"> Ethereum</span>
+
+              <br/>Ethereum Price: <span id="ethPrice"></span>
+              <br/>Amount of Ethereum Needed: <span id="ethNeed"></span>
+            </div>
+            <div class="card-action center">
+              <a href="https://www.coinbase.com/join/585d3083a6fb393c51cf1880">Buy ETH on Coinbase</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text center">
+              <span class="card-title"><img src="https://cryptocompare.com/media/19782/litecoin-logo.png" class="icon"> Litecoin</span>
+
+              <br/>Litcoin Price: <span id="ltcPrice"></span>
+              <br/>Amount of Litecoin Needed: <span id="ltcNeed"></span>
+            </div>
+            <div class="card-action center">
+              <a href="https://www.coinbase.com/join/585d3083a6fb393c51cf1880">Buy LTC on Coinbase</a>
+            </div>
+          </div>
+        </div>
+
+        
+
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="page-footer grey darken-3">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Links</h5>
+          <ul>
+            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+            <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 
 
