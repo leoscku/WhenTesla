@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+
+  <style>
+    .parallax-container {
+      height: 100vh;
+    }
+
+    .opaque-background {
+      background-color:rgba(0,0,0,0.7);
+    }
+  </style>
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+
+
+
+<body>
+
+  <div class="parallax-container">
+
+    <nav class="transparent z-depth-0 container">
+      <div class="nav-wrapper">
+        <a href="index.html" class="brand-logo black-text">WhenTesla</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down black-text">
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="parallax"><img src="./img/roadster.jpg" width=100vh></div>
+    <div class="section no-pad-bot">
+      <div class="container">
+
+        <h1 class="center black-text">WhenTesla</h1>
+        <div class="row center">
+          <h5 class="header col s12 light">A simple calculator for cryptocurrency and cars</h5>
+        </div>
+        <div class="row center">
+          <a href="#" class="btn-large waves-effect waves-light teal lighten-1">When Tesla?</a>
+        </div>
+        <br><br>
+
+      </div>
+    </div>
+
+    <div id ="test" class="section opaque-background center">
+      <div class="row container white-text">
+        <h2 class="header">Result</h2>
+        <br />btcPrice: <span id="btcPrice"></span>
+        <br />teslaPrice: <span id="teslaPrice"></span>
+        <br />NeededBtc: <span id="btcNeed"></span>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <!--JavaScript at end of body for optimized loading-->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
