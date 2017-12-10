@@ -6,46 +6,88 @@ $(document).ready(function() {
 function priceLookUp() {
 
   teslaPrice = 250000;
+  numCurrency = 15;
 
-  $.getJSON("https://api.coinmarketcap.com/v1/ticker/bitcoin/", function(data) {
+  $.getJSON("https://api.coinmarketcap.com/v1/ticker/?limit=" + numCurrency, function(data) {
 
-    //var result = $.parseJSON(data);
-    btcPrice = parseFloat(data[0].price_usd);
+    var currencyList = [];
+    var priceList = [];
+    var currencyName = [];
+    var currencyid = [];
 
-    var btcNeed = teslaPrice / btcPrice;
+    for (var i = 0; i < numCurrency; i++) {
 
-    document.getElementById("btcPrice").innerHTML = btcPrice.toFixed(2);
-    document.getElementById("btcNeed").innerHTML = btcNeed.toFixed(2);
+      currencyid.push(data[i].id);
+      currencyName.push(data[i].name)
+      currencyList.push(data[i].symbol);
+      priceList.push(data[i].price_usd);
 
-  });
+    }
 
-  $.getJSON("https://api.coinmarketcap.com/v1/ticker/ethereum/", function(data) {
+    for (var i = 0; i < numCurrency; i++) {
 
-    //var result = $.parseJSON(data);
-    ethPrice = parseFloat(data[0].price_usd);
+      //creating card api results
+      var br = document.createElement('br');
 
-    var ethNeed = teslaPrice / ethPrice;
+      var colDiv = document.createElement('div');
+      colDiv.className = "col s12 m4";
 
-    document.getElementById("ethPrice").innerHTML = ethPrice.toFixed(2);
-    document.getElementById("ethNeed").innerHTML = ethNeed.toFixed(2);
+      var cardDiv = document.createElement('div');
+      cardDiv.className = "card blue-grey darken-1";
 
-  });
+      var contentDiv = document.createElement('div');
+      contentDiv.className = "card-content white-text center";
 
-  $.getJSON("https://api.coinmarketcap.com/v1/ticker/litecoin/", function(data) {
+      var titleSpan = document.createElement('span');
+      titleSpan.className = "card-title";
 
-    //var result = $.parseJSON(data);
-    ltcPrice = parseFloat(data[0].price_usd);
+      var currName = document.createTextNode(" " + currencyName[i]);
+      var image = document.createElement('img');
+      image.src = "https://files.coinmarketcap.com/static/img/coins/32x32/" + currencyid[i] + ".png";
+      image.className = "icon";
 
-    var ltcNeed = teslaPrice / ltcPrice;
+      titleSpan.appendChild(image);
+      titleSpan.appendChild(currName)
+      contentDiv.appendChild(titleSpan);
 
-    document.getElementById("ltcPrice").innerHTML = ltcPrice.toFixed(2);
-    document.getElementById("ltcNeed").innerHTML = ltcNeed.toFixed(2);
+
+      contentDiv.appendChild(br);
+      contentDiv.appendChild(document.createTextNode(currencyName[i] + " Price: "));
+
+      var priceSpan = document.createElement('span');
+      priceSpan.id = currencyList[i] + "Price";
+
+      contentDiv.appendChild(priceSpan);
+
+      contentDiv.appendChild(br);
+      contentDiv.appendChild(document.createTextNode(currencyName[i] + " Needed: "));
+
+      var needSpan = document.createElement('span');
+      needSpan.id = currencyList[i] + "Need";
+      contentDiv.appendChild(needSpan);
+
+      cardDiv.appendChild(contentDiv);
+      colDiv.appendChild(cardDiv);
+
+      // add created card to body
+      document.getElementById("price-container").appendChild(colDiv);
+
+      //parse price and amount needed
+      var price = parseFloat(priceList[i]);
+      var coinNeed = teslaPrice / price;
+
+      document.getElementById(currencyList[i] + "Price").innerHTML = price.toFixed(2) + " USD";
+      document.getElementById( currencyList[i] + "Need").innerHTML = coinNeed.toFixed(2);
+    }
+
 
   });
 
 }
 
 function showPrice() {
+
+  document.getElementById("pricebtn").classList.add('disabled');
 
   var elem = document.getElementById("index-parallax");
   elem.style.height = "500px";
