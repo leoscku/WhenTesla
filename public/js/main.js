@@ -15,6 +15,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var db = firebase.firestore();
+
 $(document).ready(function() {
   $('.parallax').parallax();
   init();
@@ -32,6 +34,19 @@ function init() {
       priceList.push(data[i].price_usd);
       console.log(currencyName[i]);
 
+      db.collection("CryptoData").doc(data[i].id).set({
+          id: data[i].id,
+          name: data[i].name,
+          symbol: data[i].symbol,
+          price_usd: data[i].price_usd
+        })
+        .then(function() {
+          console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
+
     }
 
     createCards();
@@ -43,10 +58,6 @@ function init() {
 function createCards() {
 
   for (var i = 0; i < numCurrency; i++) {
-
-    console.log(currencyName[i]);
-    console.log(i);
-
     //creating card api results
     var br = document.createElement('br');
 
@@ -108,7 +119,7 @@ function updatePrice() {
       currencyName.push(data[i].name)
       currencyList.push(data[i].symbol);
       priceList.push(data[i].price_usd);
-      console.log(currencyName[i]);
+
 
       var price = parseFloat(priceList[i]);
       var coinNeed = teslaPrice / price;
