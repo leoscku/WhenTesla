@@ -20,36 +20,86 @@ var db = firebase.firestore();
 $(document).ready(function() {
   $('.parallax').parallax();
   init();
+
 });
 
 function init() {
 
   $.getJSON("https://api.coinmarketcap.com/v1/ticker/?limit=" + numCurrency, function(data) {
 
+      for (var i = 0; i < numCurrency; i++) {
+
+        currencyid.push(data[i].id);
+
+        db.collection("CryptoData").doc(data[i].id).set({
+            id: data[i].id,
+            name: data[i].name,
+            symbol: data[i].symbol,
+            price_usd: data[i].price_usd,
+            rank: data[i].rank
+          })
+          .then(function() {
+            console.log("Document successfully written!");
+          })
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
+      }
+
+    })
+    .then(function() {
+      createCards();
+    })
+
+
+}
+
+function updatePrice() {
+
+  console.log("update Price");
+
+  for (var i = 0; i < numCurrency; i++) {
+
+    db.collection("CryptoData").doc(currencyid[i]).get().then(function(doc) {
+      if (doc.exists) {
+        var price = parseFloat(doc.data().price_usd);
+        var coinNeed = teslaPrice / price;
+
+        document.getElementById(doc.data().symbol + "Price").innerHTML = price.toFixed(2) + " USD";
+        document.getElementById(doc.data().symbol + "Need").innerHTML = coinNeed.toFixed(2);
+      } else {
+        console.log("No such document!");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+
+
+
+  }
+
+
+}
+
+function getPrice() {
+
+  $.getJSON("https://api.coinmarketcap.com/v1/ticker/?limit=" + numCurrency, function(data) {
+
     for (var i = 0; i < numCurrency; i++) {
 
       currencyid.push(data[i].id);
-      currencyName.push(data[i].name)
-      currencyList.push(data[i].symbol);
-      priceList.push(data[i].price_usd);
-      console.log(currencyName[i]);
 
-      db.collection("CryptoData").doc(data[i].id).set({
-          id: data[i].id,
-          name: data[i].name,
-          symbol: data[i].symbol,
-          price_usd: data[i].price_usd
+      db.collection("CryptoData").doc(data[i].id).update({
+          price_usd: data[i].price_usd,
+          rank: data[i].rank
         })
         .then(function() {
-          console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-          console.error("Error writing document: ", error);
+          console.log("Document successfully updated!");
         });
 
     }
 
-    createCards();
+
 
   });
 
@@ -57,85 +107,81 @@ function init() {
 
 function createCards() {
 
+  console.log("create Card");
   for (var i = 0; i < numCurrency; i++) {
-    //creating card api results
-    var br = document.createElement('br');
 
-    var colDiv = document.createElement('div');
-    colDiv.className = "col s12 m4";
+    var name;
+    var currID;
+    var symbol;
 
-    var cardDiv = document.createElement('div');
-    cardDiv.className = "card blue-grey darken-1";
+    db.collection("CryptoData").doc(currencyid[i]).get().then(function(doc) {
+      if (doc.exists) {
+        currID = doc.data().id;
+        name = doc.data().name;
+        symbol = doc.data().symbol;
 
-    var contentDiv = document.createElement('div');
-    contentDiv.className = "card-content white-text center";
+        //creating card api results
+        var br = document.createElement('br');
 
-    var titleSpan = document.createElement('span');
-    titleSpan.className = "card-title";
+        var colDiv = document.createElement('div');
+        colDiv.className = "col s12 m4";
 
-    var currName = document.createTextNode(" " + currencyName[i]);
-    var image = document.createElement('img');
-    image.src = "https://files.coinmarketcap.com/static/img/coins/32x32/" + currencyid[i] + ".png";
-    image.className = "icon";
+        var cardDiv = document.createElement('div');
+        cardDiv.className = "card blue-grey darken-1";
 
-    titleSpan.appendChild(image);
-    titleSpan.appendChild(currName)
-    contentDiv.appendChild(titleSpan);
+        var contentDiv = document.createElement('div');
+        contentDiv.className = "card-content white-text center";
+
+        var titleSpan = document.createElement('span');
+        titleSpan.className = "card-title";
+
+        var currName = document.createTextNode(" " + doc.data().name);
+        var image = document.createElement('img');
+        image.src = "https://files.coinmarketcap.com/static/img/coins/32x32/" + doc.data().id + ".png";
+        image.className = "icon";
+
+        titleSpan.appendChild(image);
+        titleSpan.appendChild(currName)
+        contentDiv.appendChild(titleSpan);
 
 
-    contentDiv.appendChild(br);
-    contentDiv.appendChild(document.createTextNode(currencyName[i] + " Price: "));
+        contentDiv.appendChild(br);
+        contentDiv.appendChild(document.createTextNode(doc.data().name + " Price: "));
 
-    var priceSpan = document.createElement('span');
-    priceSpan.id = currencyList[i] + "Price";
+        var priceSpan = document.createElement('span');
+        priceSpan.id = doc.data().symbol + "Price";
 
-    contentDiv.appendChild(priceSpan);
+        contentDiv.appendChild(priceSpan);
 
-    contentDiv.appendChild(br);
-    contentDiv.appendChild(document.createTextNode(currencyName[i] + " Needed: "));
+        contentDiv.appendChild(br);
+        contentDiv.appendChild(document.createTextNode(doc.data().name + " Needed: "));
 
-    var needSpan = document.createElement('span');
-    needSpan.id = currencyList[i] + "Need";
-    contentDiv.appendChild(needSpan);
+        var needSpan = document.createElement('span');
+        needSpan.id = doc.data().symbol + "Need";
+        contentDiv.appendChild(needSpan);
 
-    cardDiv.appendChild(contentDiv);
-    colDiv.appendChild(cardDiv);
+        cardDiv.appendChild(contentDiv);
+        colDiv.appendChild(cardDiv);
 
-    // add created card to body
-    document.getElementById("price-container").appendChild(colDiv);
+        // add created card to body
+        document.getElementById("price-container").appendChild(colDiv);
+      } else {
+        console.log("No such document!");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
 
-    updatePrice();
+
   }
 
-}
-
-function updatePrice() {
-
-  $.getJSON("https://api.coinmarketcap.com/v1/ticker/?limit=" + numCurrency, function(data) {
-
-    for (var i = 0; i < numCurrency; i++) {
-
-      currencyid.push(data[i].id);
-      currencyName.push(data[i].name)
-      currencyList.push(data[i].symbol);
-      priceList.push(data[i].price_usd);
-
-
-      var price = parseFloat(priceList[i]);
-      var coinNeed = teslaPrice / price;
-
-      document.getElementById(currencyList[i] + "Price").innerHTML = price.toFixed(2) + " USD";
-      document.getElementById(currencyList[i] + "Need").innerHTML = coinNeed.toFixed(2);
-
-    }
-
-
-
-  });
+  getPrice();
 
 }
 
 function showPrice() {
+
+  updatePrice();
 
   document.getElementById("pricebtn").classList.add('disabled');
 
