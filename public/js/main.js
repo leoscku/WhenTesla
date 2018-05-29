@@ -97,7 +97,10 @@ function getPrice() {
           rank: value.rank
         })
         .then(function() {
-          console.log("Document successfully updated!");
+          console.log("getPrice done");
+
+          $('#pricebtn').html('When Tesla?');
+          $('#pricebtn').removeClass('disabled');
         });
     });
 
@@ -168,12 +171,12 @@ function createCards() {
             // add created card to body
             document.getElementById("price-container").appendChild(colDiv);
         });
+
+        getPrice();
     })
     .catch(function(error) {
         console.log("Error getting documents: ", error);
     });
-
-  getPrice();
 
 }
 
@@ -191,6 +194,5 @@ function showPrice() {
   var divHeight = document.getElementById("price-info").clientHeight;
   var divParallax = document.getElementById("price-parallax");
   divParallax.style.height = divHeight + "px";
-
 
 }
