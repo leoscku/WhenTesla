@@ -30,7 +30,7 @@ function init() {
   $.getJSON("https://api.coinmarketcap.com/v2/ticker/?start=1&limit=" + numCurrency, function(data) {
       console.log(data.data);
 
-      $.each(data.data , function (index, value){
+      $.each(data.data, function(index, value) {
         console.log(value);
         currencyid.push(value.website_slug);
 
@@ -88,7 +88,7 @@ function getPrice() {
 
   $.getJSON("https://api.coinmarketcap.com/v2/ticker/?limit=" + numCurrency, function(data) {
 
-    $.each(data.data , function (index, value){
+    $.each(data.data, function(index, value) {
       console.log(value);
       currencyid.push(value.website_slug);
 
@@ -117,65 +117,65 @@ function createCards() {
   db.collection("CryptoData").orderBy("rank").limit(numCurrency)
     .get()
     .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
+      querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
 
-            currID = doc.data().id;
-            name = doc.data().name;
-            symbol = doc.data().symbol;
+        currID = doc.data().id;
+        name = doc.data().name;
+        symbol = doc.data().symbol;
 
-            //creating card api results
-            var br = document.createElement('br');
+        //creating card api results
+        var br = document.createElement('br');
 
-            var colDiv = document.createElement('div');
-            colDiv.className = "col s12 m4";
+        var colDiv = document.createElement('div');
+        colDiv.className = "col s12 m4";
 
-            var cardDiv = document.createElement('div');
-            cardDiv.className = "card blue-grey darken-1";
+        var cardDiv = document.createElement('div');
+        cardDiv.className = "card blue-grey darken-1";
 
-            var contentDiv = document.createElement('div');
-            contentDiv.className = "card-content white-text center";
+        var contentDiv = document.createElement('div');
+        contentDiv.className = "card-content white-text center";
 
-            var titleSpan = document.createElement('span');
-            titleSpan.className = "card-title";
+        var titleSpan = document.createElement('span');
+        titleSpan.className = "card-title";
 
-            var currName = document.createTextNode(" " + doc.data().name);
-            var image = document.createElement('img');
-            image.src = "https://s2.coinmarketcap.com/static/img/coins/32x32/" + doc.data().id + ".png";
-            image.className = "icon";
+        var currName = document.createTextNode(" " + doc.data().name);
+        var image = document.createElement('img');
+        image.src = "https://s2.coinmarketcap.com/static/img/coins/32x32/" + doc.data().id + ".png";
+        image.className = "icon";
 
-            titleSpan.appendChild(image);
-            titleSpan.appendChild(currName)
-            contentDiv.appendChild(titleSpan);
+        titleSpan.appendChild(image);
+        titleSpan.appendChild(currName)
+        contentDiv.appendChild(titleSpan);
 
 
-            contentDiv.appendChild(br);
-            contentDiv.appendChild(document.createTextNode(doc.data().name + " Price: "));
+        contentDiv.appendChild(br);
+        contentDiv.appendChild(document.createTextNode(doc.data().name + " Price: "));
 
-            var priceSpan = document.createElement('span');
-            priceSpan.id = doc.data().symbol + "Price";
+        var priceSpan = document.createElement('span');
+        priceSpan.id = doc.data().symbol + "Price";
 
-            contentDiv.appendChild(priceSpan);
+        contentDiv.appendChild(priceSpan);
 
-            contentDiv.appendChild(br);
-            contentDiv.appendChild(document.createTextNode(doc.data().name + " Needed: "));
+        contentDiv.appendChild(br);
+        contentDiv.appendChild(document.createTextNode(doc.data().name + " Needed: "));
 
-            var needSpan = document.createElement('span');
-            needSpan.id = doc.data().symbol + "Need";
-            contentDiv.appendChild(needSpan);
+        var needSpan = document.createElement('span');
+        needSpan.id = doc.data().symbol + "Need";
+        contentDiv.appendChild(needSpan);
 
-            cardDiv.appendChild(contentDiv);
-            colDiv.appendChild(cardDiv);
+        cardDiv.appendChild(contentDiv);
+        colDiv.appendChild(cardDiv);
 
-            // add created card to body
-            document.getElementById("price-container").appendChild(colDiv);
-        });
+        // add created card to body
+        document.getElementById("price-container").appendChild(colDiv);
+      });
 
-        getPrice();
+      getPrice();
     })
     .catch(function(error) {
-        console.log("Error getting documents: ", error);
+      console.log("Error getting documents: ", error);
     });
 
 }
